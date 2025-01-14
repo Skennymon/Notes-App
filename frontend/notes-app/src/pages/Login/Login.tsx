@@ -13,7 +13,7 @@ function Login() {
                         <h4 className='text-2xl mb-7'>Login</h4>
                         <input placeholder='Email' className='input-box'></input>
                         <button type='submit' className='btn-primary'>Login</button>
-                        <p className='text-sm text-center mt-4'>Not Registered yet? {" "} <Link to='SignUp' className='font-medium underline text-primary'>Sign Up Here!</Link></p>
+                        <p className='text-sm text-center mt-4'>Not Registered yet? <Link to='SignUp' className='font-medium underline text-primary'>Sign Up Here!</Link></p>
                     </form>
                 </div>
             </div>
