@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Navbar from '../../components/Navbar'
 import PasswordInput from '../../components/passwordinput.tsx'
 import { validateEmail } from '../../utils/helper.tsx'
+import { Link } from 'react-router-dom'
 
 function SignUp() {
   
@@ -24,6 +25,10 @@ function SignUp() {
         setError("Enter password pls");
         return;
     }
+
+    //api calls
+    //probably use some database to store the bing bongs
+
     setError("");
 
   }
@@ -42,7 +47,9 @@ function SignUp() {
                     {error && <p className='text-red-600 text-xs'>{error}</p>}
 
                     <button type="submit" className="btn-primary">Sign Up!</button>
-                    
+                    <p className='text-sm text-center mt-4'>
+                        Already have an account? <Link to="/login" className='font-medium text-primary underline'>Login</Link>
+                    </p>
                 </form>
             </div>
         </div>
