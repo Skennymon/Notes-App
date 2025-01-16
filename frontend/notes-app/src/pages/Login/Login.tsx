@@ -1,5 +1,5 @@
 import Navbar from '../../components/Navbar.tsx'
-import PasswordInput from '../../components/passwordinput.tsx'
+import PasswordInput from '../../components/PasswordInput.tsx'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'

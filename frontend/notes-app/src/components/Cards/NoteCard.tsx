@@ -1,5 +1,6 @@
 import React from 'react'
 import { MdOutlinePushPin, MdCreate, MdDelete } from 'react-icons/md'
+
 const NoteCard = ({
     title,
     date,
@@ -27,7 +28,7 @@ const NoteCard = ({
 
             </div>
 
-            <p className="">{content?.slice(0, 60)} </p>
+            <p className="">{content?.slice(0, 60)}</p>
 
             <div className='flex items-center gap-2 justify-between mt-2'>
                 
