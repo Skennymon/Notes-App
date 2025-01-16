@@ -35,10 +35,15 @@ function Home() {
           </div>
         </div>
 
-        <button className='bg-green-500 rounded-2xl w-16 h-16 flex items-center justify-center bg-primary hover:bg-blue-600 absolute right-10 bottom-10 drop-shadow-md' onClick={() => {}}>
+        <button 
+        className='rounded-2xl w-16 h-16 flex items-center justify-center bg-primary hover:bg-blue-600 absolute right-10 bottom-10 drop-shadow-md' 
+        onClick={() => {
+          setOpenEditModal({ isShown: true, type: "add", data: null});
+        }}>
           <MdAdd className='text-[32px] text-white' />
         </button>
 
+        {/*this is to toggle a popup to add a note*/ }
         <Modal
           isOpen={openAddEditModal.isShown}
           onRequestClose={() => {}}
@@ -48,9 +53,9 @@ function Home() {
             },
           }}
           contentLabel=''
-          className=''
+          className='w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll'
         >
-          <AddEditNotes/>
+          <AddEditNotes onClose={() => setOpenEditModal({ isShown: false, type: "add", data: null })} type={openAddEditModal.type} noteData={openAddEditModal.data}/>
         </Modal>
 
 
