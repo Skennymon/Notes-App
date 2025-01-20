@@ -157,5 +157,44 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 
 });
 
+// Edit Note
+app.post("/edit-note/:noteId", authenticateToken, async(req, res) => {
+    const noteId = req.params.noteId;
+    const { title, content, tags, isPinned } = req.body;
+    const { user } = req.user;
+
+    if(!title && !content && !tags) {
+        return res.status(400).json({ error: true, message: "No changes provided" });
+    }
+
+    try {
+        const note = await Note.findOne({ _id: noteId, userId: user._id }); //find the note with its object id and user id
+
+        if(!note) {
+            return res.status(400).json({ error: true, message: "Note doesn't exist"});
+        }
+
+        if(title) note.title = title;
+        if(content) note.content = content;
+        if(tags) note.tags = tags;
+        if(isPinned) note.isPinned = isPinned;
+
+        await note.save();
+
+        return res.json({
+            error: false,
+            message: "Note successfully edited"
+        });
+    }
+    catch(error) {
+        res.status(500).json({
+            error: true,
+            message: "Server is fucked up"
+        });
+    }
+});
+
+// listen for api calls on port 8000
 app.listen(8000);
 module.exports = app;
+
