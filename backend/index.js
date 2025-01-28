@@ -247,6 +247,38 @@ app.post("/delete-note/:noteId", authenticateToken, async(req, res) => {
 
 });
 
+// Update isPinnedValue
+app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
+    const noteId = req.params.noteId;
+    const { isPinned } = req.body;
+    const { user } = req.user;
+
+    try {
+        const note = await Note.findOne({_id: noteId, userId: user._id});
+
+        if(!note) {
+            return res.status(400).json({
+                error: true,
+                message: "Note not found"
+            });
+        }
+
+        note.isPinned = isPinned;
+        await note.save();
+
+        return res.json({
+            error: false,
+            note,
+            message: "Note successfully pinned"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal Server Error"
+        })
+    }
+})
+
 
 
 // listen for api calls on port 8000
