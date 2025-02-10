@@ -91,7 +91,7 @@ app.post("/login", async (req, res) => {
     if(userInfo.email == email && userInfo.password == password) {
         const user = { user: userInfo };
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: "36000m",
+            expiresIn: 60 * 60 * 24 * 365 * 10,
         });
 
         return res.json({
@@ -278,6 +278,22 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
         })
     }
 })
+
+// Get User
+app.get("/get-user", authenticateToken, async (req, res) => {
+    const { user } = req.user;
+    const isUser = await User.findOne({_id: user._id});
+
+    if(!isUser) {
+        return res.sendStatus(401);
+    }
+
+    return res.json({
+        user: {fullName: isUser.fullName, email: isUser.email, password: isUser.password, _id: isUser._id},
+        message: "",
+
+    });
+});
 
 
 

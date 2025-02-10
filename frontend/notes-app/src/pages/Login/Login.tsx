@@ -1,15 +1,18 @@
 import Navbar from '../../components/Navbar.tsx'
 import PasswordInput from '../../components/PasswordInput.tsx'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { validateEmail } from '../../utils/helper.tsx'
+import axiosInstance from '../../utils/axiosInstance.ts';
 
 function Login() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,6 +28,26 @@ function Login() {
         //login api call
         
         setError("");
+
+        try {
+            const response = await axiosInstance.post("/login", {
+                email: email,
+                password: password,
+            });
+
+            if(response.data && response.data.accessToken) {
+                localStorage.setItem("token", response.data.accessToken);
+                navigate('/dashboard');
+            }
+        }
+        catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message);
+            }
+            else {
+                setError("An unexpected error occured. Please try again");
+            }
+        }
     }
 
     //when the <button> type is set to "submit" it'll run the function that the <form> attribute "onsubmit" is set too.
@@ -32,7 +55,7 @@ function Login() {
 
     return (
         <>
-            <Navbar/>
+            { /* <Navbar/> */ } 
             
             <div className='flex items-center justify-center mt-28'>
                 <div className='w-96 border rounded px-7 py-10 bg-white'>

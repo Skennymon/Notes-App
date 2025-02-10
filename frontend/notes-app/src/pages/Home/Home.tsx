@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../../components/Navbar.tsx'
 import NoteCard from '../../components/Cards/NoteCard.tsx'
 import { MdAdd } from 'react-icons/md'
 import AddEditNotes from './AddEditNotes.tsx'
 import Modal from 'react-modal'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../../utils/axiosInstance.ts'
+import axios from 'axios'
 
 function Home() {
 
@@ -14,10 +17,35 @@ function Home() {
     data: null,
   });
 
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+
+  // Get User Info
+  const getUserInfo = async () => {
+    try {
+      const response = await axiosInstance.get("/get-user");
+      if(response.data && response.data.user) {
+        setUserInfo(response.data.user);
+        console.log("YAY");
+      }
+    }
+    catch (error) {
+      console.log("ERROR");
+      if (error.response.status === 401) {
+        localStorage.clear();
+        navigate("/login");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+    return () => {};
+  }, []);
 
   return (
     <>
-        <Navbar/>
+        <Navbar userInfo={userInfo}/>
         
         <div className='container mx-auto'>
           
